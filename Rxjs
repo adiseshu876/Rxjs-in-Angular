@@ -1,0 +1,96 @@
+// observable()
+import { Observable } from "rxjs"
+const observable = new Observable(subscriber => {
+    subscriber.next(1);
+    subscriber.next(2);
+    subscriber.next(3);
+    subscriber.complete();
+});
+console.log('just before subscribe');
+observable.subscribe({
+  next(x) { console.log('sub1: got value ' + x); },
+  error(err) { console.error('sub1: something wrong occurred: ' + err); },
+  complete() { console.log('sub1: done'); }
+});
+observable.subscribe({
+  next(x) { console.log('sub2: got value ' + x); },
+  error(err) { console.error('sub2: something wrong occurred: ' + err); },
+  complete() { console.log('sub2: done'); }
+});
+
+console.log('just after subscribe');
+
+// subject()
+import { Subject } from "rxjs"
+
+const subject = new Subject();
+
+ // Subscriber 1
+subject.subscribe({
+  next: (v) => console.log(`observerA: ${v}`)
+});
+
+subject.next(1);
+
+// Subscriber 2
+subject.subscribe({
+  next: (v) => console.log(`observerB: ${v}`)
+});
+
+subject.next(2);
+BehaviorSubject()
+import { BehaviorSubject } from "rxjs"
+
+const subject = new BehaviorSubject(0); // 0 is the initial value
+
+subject.subscribe({
+  next: (v) => console.log(`observerA: ${v}`)
+});
+
+subject.next(1);
+subject.next(2);
+
+subject.subscribe({
+  next: (v) => console.log(`observerB: ${v}`)
+});
+
+subject.next(3);
+// ReplaySubject()
+import { ReplaySubject } from "rxjs" 
+
+const subject = new ReplaySubject(2); // buffer 3 values for new subscribers
+
+subject.subscribe({
+  next: (v) => console.log(`observerA: ${v}`)
+});
+
+subject.next(1); 
+subject.next(2);
+subject.next(3);
+
+subject.subscribe({
+  next: (v) => console.log(`observerB: ${v}`)
+});
+
+subject.next(4);
+subject.next(5);
+// AsyncSubject()
+import { AsyncSubject } from "rxjs"
+
+const subject = new AsyncSubject();
+
+subject.subscribe({
+  next: (v) => console.log(`observerA: ${v}`)
+});
+
+subject.next(1);
+subject.next(2);
+subject.next(3);
+// subject.next(4);
+
+subject.subscribe({
+  next: (v) => console.log(`observerB: ${v}`)
+});
+
+subject.next(7);
+subject.complete();
